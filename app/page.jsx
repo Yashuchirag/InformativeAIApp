@@ -1,5 +1,6 @@
 'use client';
 import { useState, useMemo, useEffect } from "react";
+import "./globals.css";
 
 const STORAGE_KEY = "ai-history_v1";
 
@@ -8,8 +9,12 @@ export default function Home() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [history, setHistory] = useState(() => {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        return saved ? JSON.parse(saved) : [];
+        try {
+          const saved = localStorage.getItem(STORAGE_KEY);
+          return saved ? JSON.parse(saved) : [];
+        } catch {
+          return [];
+        }
     });
 
 
