@@ -10,7 +10,6 @@ export default function Home() {
   const [error, setError] = useState('');
   const [history, setHistory] = useState([]);
 
-  // Load history on mount (client-only)
   useEffect(() => {
     try {
       const saved = typeof window !== 'undefined' && localStorage.getItem(STORAGE_KEY);
@@ -46,7 +45,6 @@ export default function Home() {
       // Support either {answer} or {response}
       const answer = data.answer ?? data.response ?? '';
 
-      console.log('Test Data update', answer);
       const item = {
         id: crypto.randomUUID(),
         prompt,
@@ -72,10 +70,9 @@ export default function Home() {
   return (
     <main className="wrap">
       <div className="card">
-        <header>
-          <h1>AI Prompt</h1>
+        <header className="header">
+          <h1>AI Prompt Using React App</h1>
           <p>Enter your prompt below and click submit to get a response</p>
-          <button className="ghost" onClick={clearAll}>Clear All</button>
         </header>
 
         <label className="label" htmlFor="prompt">Your Prompt</label>
@@ -93,6 +90,7 @@ export default function Home() {
           <span className={error ? 'error' : 'status'}>
             {error ? `Error: ${error}` : loading ? 'Contacting model...' : 'Ready to generate'}
           </span>
+          <button className="ghost" onClick={clearAll}>Clear All</button>
         </div>
 
         <section className="history">
