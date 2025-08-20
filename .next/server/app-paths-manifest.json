@@ -1,4 +1,4 @@
 {
-  "/api/generate/route": "static/webpack/app/api/generate/route.f8054d9af106be73.hot-update.js",
+  "/api/generate/route": "app/api/generate/route.js",
   "/page": "app/page.js"
 }
