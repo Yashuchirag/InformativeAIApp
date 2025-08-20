@@ -19,7 +19,7 @@ A modern, responsive web application built with Next.js and React, designed to p
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone git@github.com:Yashuchirag/InformativeAIApp.git
    cd InformativeAIApp
    ```
 
@@ -58,14 +58,6 @@ InformativeAIApp/
 ├── public/              # Static files
 └── package.json         # Project dependencies and scripts
 ```
-
-## 🌟 Contributing
-
-Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
