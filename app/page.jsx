@@ -9,6 +9,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [history, setHistory] = useState([]);
+  const [file, setFile] = useState(null);
 
   useEffect(() => {
     try {
@@ -24,17 +25,31 @@ export default function Home() {
     } catch {}
   }, [history]);
 
-  const canSubmit = useMemo(() => prompt.trim() !== '' && !loading, [prompt, loading]);
+  const handleFileSelect = (picked) => setFile(picked || null);
 
+  const canSubmit = useMemo(() => prompt.trim() !== '' && !loading, [prompt, loading]);
+  
   const submit = async () => {
     setLoading(true);
     setError('');
     try {
-      const res = await fetch('/api/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt }),
-      });
+      let res;
+
+      if(file){
+        const form = new FormData();
+        form.append('prompt', prompt);
+        form.append('file', file);
+        res = await fetch('/api/generate', {
+          method: 'POST',
+          body: form,
+        });
+      }else{
+        res = await fetch('/api/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prompt }),
+        });
+      }
 
       const raw = await res.text();
       let data;
@@ -50,6 +65,7 @@ export default function Home() {
         prompt,
         answer,
         ts: Date.now(),
+        fileName: file?.name ?? null,
       };
       setHistory(prev => [item, ...prev]);   // newest first
       setPrompt('');
@@ -83,9 +99,29 @@ export default function Home() {
           onChange={(e) => setPrompt(e.target.value)}
         />
 
+        <label className="label" htmlFor="file"></label>
+        <input
+          id="file"
+          type="file"
+          onChange={(e) => handleFileSelect(e.target.files?.[0] ?? null)}
+          disabled={loading}
+        />
+        {
+          file && (
+            <div className="file-info"> 
+              <span>Selected file: <strong>{file.name}</strong></span>
+              <button onClick={() => setFile(null)}
+                disabled={loading}
+                >
+                Remove
+              </button>
+            </div>
+          )
+        }
+
         <div className="row">
           <button className="primary" onClick={submit} disabled={!canSubmit}>
-            {loading ? 'Thinking...' : 'Submit'}
+            {loading ? 'Waiting for response...' : 'Submit'}
           </button>
           <span className={error ? 'error' : 'status'}>
             {error ? `Error: ${error}` : loading ? 'Contacting model...' : 'Ready to generate'}

@@ -64,3 +64,13 @@ InformativeAIApp/
 - Built with [Next.js](https://nextjs.org/)
 - Powered by [React](https://reactjs.org/)
 - Icons from [React Icons](https://react-icons.github.io/react-icons/)
+
+## To Implement Features
+
+- Buttons/input ways to upload file, images
+- Drop down to select a different model. Model should be greyed out if is not fully available, show which model is selected
+- Press enter to submit prompt, shift + enter should just go to next line 
+- Markdown rendering 
+- Multiple Chat history support with button saying start a new chat
+- Prompt window max characters limit enforcement 
+- Dark mode light mode switch
