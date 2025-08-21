@@ -1,8 +1,10 @@
 'use client';
 import { useEffect, useMemo, useState } from 'react';
+import { ThemeProvider, ThemeToggleButton } from './themePage';
 import './globals.css';
 
 const STORAGE_KEY = 'ai-history_v1';
+
 
 export default function Home() {
   const [prompt, setPrompt] = useState('');
@@ -93,64 +95,68 @@ export default function Home() {
   };
 
   return (
-    <main className="wrap">
-      <div className="card">
-        <header className="header">
-          <h1>AI Prompt Using React App</h1>
-          <p>Enter your prompt below and click submit to get a response</p>
-        </header>
+    <ThemeProvider>    
+      <main className="wrap">
+        
+        <div className="card">
+          <header className="header">
+            <h1>Got a Question? 🤔</h1>
+            <p>Type your question or drop in a file, and let AI generate the answer for you.</p>
+            <ThemeToggleButton/>
+          </header>
 
-        <label className="label" htmlFor="prompt">Your Prompt</label>
-        <textarea
-          id="prompt"
-          placeholder="Ask anything..."
-          value={prompt}
-          onChange={(e) => setPrompt(e.target.value)}
-          onKeyDown={handleTextAreaKeyDown}
-        />
+          <label className="label" htmlFor="prompt">Your Prompt</label>
+          <textarea
+            id="prompt"
+            placeholder="Ask anything..."
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+            onKeyDown={handleTextAreaKeyDown}
+          />
 
-        <label className="label" htmlFor="file"></label>
-        <input
-          id="file"
-          type="file"
-          onChange={(e) => handleFileSelect(e.target.files?.[0] ?? null)}
-          disabled={loading}
-        />
-        {
-          file && (
-            <div className="file-info"> 
-              <span>Selected file: <strong>{file.name}</strong></span>
-              <button onClick={() => setFile(null)}
-                disabled={loading}
-                >
-                Remove
-              </button>
-            </div>
-          )
-        }
+          <label className="label" htmlFor="file"></label>
+          <input
+            id="file"
+            type="file"
+            onChange={(e) => handleFileSelect(e.target.files?.[0] ?? null)}
+            disabled={loading}
+          />
+          {
+            file && (
+              <div className="file-info"> 
+                <span>Selected file: <strong>{file.name}</strong></span>
+                <button onClick={() => setFile(null)}
+                  disabled={loading}
+                  >
+                  Remove
+                </button>
+              </div>
+            )
+          }
 
-        <div className="row">
-          <button className="primary" onClick={submit} disabled={!canSubmit}>
-            {loading ? 'Waiting for response...' : 'Submit'}
-          </button>
-          <span className={error ? 'error' : 'status'}>
-            {error ? `Error: ${error}` : loading ? 'Contacting model...' : 'Ready to generate'}
-          </span>
-          <button className="ghost" onClick={clearAll}>Clear All</button>
+          <div className="row">
+            <button className="primary" onClick={submit} disabled={!canSubmit}>
+              {loading ? 'Waiting for response...' : 'Submit'}
+            </button>
+            <span className={error ? 'error' : 'status'}>
+              {error ? `Error: ${error}` : loading ? 'Contacting model...' : 'Ready to generate'}
+            </span>
+            <button className="ghost" onClick={clearAll}>Clear All</button>
+          </div>
+
+          <section className="history">
+            {history.length === 0 && <div className="item"><em>No history yet</em></div>}
+            {history.map((item) => (
+              <article className="item" key={item.id}>
+                <div className="label">Prompt</div>
+                <pre>{item.prompt}</pre>
+                <div className="label" style={{ marginTop: 8 }}>Response</div>
+                <pre>{item.answer}</pre>
+              </article>
+            ))}
+          </section>
         </div>
-
-        <section className="history">
-          {history.length === 0 && <div className="item"><em>No history yet</em></div>}
-          {history.map((item) => (
-            <article className="item" key={item.id}>
-              <div className="label">Prompt</div>
-              <pre>{item.prompt}</pre>
-              <div className="label" style={{ marginTop: 8 }}>Response</div>
-              <pre>{item.answer}</pre>
-            </article>
-          ))}
-        </section>
-      </div>
-    </main>
+      </main>
+    </ThemeProvider>
   );
 }

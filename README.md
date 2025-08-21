@@ -73,4 +73,4 @@ InformativeAIApp/
 - Markdown rendering with tables also
 - Multiple Chat history support with button saying start a new chat
 - Prompt window max characters limit enforcement 
-- Dark mode light mode switch
+- ✅ Dark mode light mode switch
