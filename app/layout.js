@@ -1,5 +1,5 @@
 export const metadata = {
-  title: 'AI Prompt (React + JS)',
+  title: 'Personal Assistant',
   description: 'Tiny AI Prompt App using Next.js',
 }
 

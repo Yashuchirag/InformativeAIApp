@@ -143,6 +143,12 @@ export default function Home() {
             </span>
             <button className="ghost" onClick={clearAll}>Clear All</button>
           </div>
+          <label htmlFor="model-select">ChatGPT Engine:</label>
+          <select id="model-select" >
+              <option value="model-a" >Model A</option>
+              <option value="model-b" >Model B (Selected)</option>
+              <option value="model-c" >Model C (Unavailable)</option>
+          </select>
 
           <section className="history">
             {history.length === 0 && <div className="item"><em>No history yet</em></div>}
