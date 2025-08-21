@@ -25,6 +25,15 @@ export default function Home() {
     } catch {}
   }, [history]);
 
+  const handleTextAreaKeyDown = (event) => {
+    if (event.key == 'Enter') {
+      if (event.shiftKey){
+        return;
+      }
+      event.preventDefault();
+      if (canSubmit){ submit()};
+    }
+  };
   const handleFileSelect = (picked) => setFile(picked || null);
 
   const canSubmit = useMemo(() => prompt.trim() !== '' && !loading, [prompt, loading]);
@@ -97,6 +106,7 @@ export default function Home() {
           placeholder="Ask anything..."
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
+          onKeyDown={handleTextAreaKeyDown}
         />
 
         <label className="label" htmlFor="file"></label>
