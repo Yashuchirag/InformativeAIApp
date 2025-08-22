@@ -5,6 +5,12 @@ import './globals.css';
 
 const STORAGE_KEY = 'ai-history_v1';
 
+const MODELS = [
+  { id: "gpt-4.1-mini", label: "gpt-4.1-mini", },
+  { id: "gpt-4o-mini", label: "GPT-4o mini"  },
+  { id: "gpt-4.1-nano", label: "gpt-4.1-nano"  },
+  { id: "gpt-5-mini", label: "gpt-5-mini" }
+];
 
 export default function Home() {
   const [prompt, setPrompt] = useState('');
@@ -12,6 +18,7 @@ export default function Home() {
   const [error, setError] = useState('');
   const [history, setHistory] = useState([]);
   const [file, setFile] = useState(null);
+  const [modelId, setModelID] = useState('');
 
   useEffect(() => {
     try {
@@ -50,6 +57,7 @@ export default function Home() {
         const form = new FormData();
         form.append('prompt', prompt);
         form.append('file', file);
+        form.append('model', modelId);
         res = await fetch('/api/generate', {
           method: 'POST',
           body: form,
@@ -58,7 +66,7 @@ export default function Home() {
         res = await fetch('/api/generate', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ prompt }),
+          body: JSON.stringify({ prompt, model: modelId }),
         });
       }
 
@@ -143,11 +151,20 @@ export default function Home() {
             </span>
             <button className="ghost" onClick={clearAll}>Clear All</button>
           </div>
-          <label htmlFor="model-select">ChatGPT Engine:</label>
-          <select id="model-select" >
-              <option value="model-a" >Model A</option>
-              <option value="model-b" >Model B (Selected)</option>
-              <option value="model-c" >Model C (Unavailable)</option>
+
+          <label htmlFor="model-select" className="label">Model</label>
+          <select
+            id="model-select"
+            className="select"
+            value={modelId}
+            onChange={(e) => setModelID(e.target.value)}
+          >
+            <option value="" disabled>Select a model…</option>
+            {MODELS.map((m) => (
+              <option key={m.id} value={m.id}>
+                {m.label}
+              </option>
+            ))}
           </select>
 
           <section className="history">
