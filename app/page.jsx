@@ -19,6 +19,12 @@ export default function Home() {
   const [history, setHistory] = useState([]);
   const [file, setFile] = useState(null);
   const [modelId, setModelID] = useState('');
+  const LIMIT = 1000;
+  const WARN_AT = 50; // show warning when <= 50 chars left
+
+  const remaining = LIMIT - prompt.length;
+  const isWarn = remaining <= WARN_AT && remaining > 0;
+  const isMaxed = remaining === 0;
 
   useEffect(() => {
     try {
@@ -44,7 +50,7 @@ export default function Home() {
     }
   };
   const handleFileSelect = (picked) => setFile(picked || null);
-
+  
   const canSubmit = useMemo(() => prompt.trim() !== '' && !loading, [prompt, loading]);
   
   const submit = async () => {
@@ -116,6 +122,7 @@ export default function Home() {
           <label className="label" htmlFor="prompt">Your Prompt</label>
           <textarea
             id="prompt"
+            maxLength={'LIMIT'}
             placeholder="Ask anything..."
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}

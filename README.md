@@ -68,7 +68,7 @@ InformativeAIApp/
 ## To Implement Features
 
 - ✅ Buttons/input ways to upload file, images
-- Drop down to select a different model. Model should be greyed out if it is not fully available, show which model is selected
+- ✅ Drop down to select a different model. Model should be greyed out if it is not fully available, show which model is selected
 - ✅ Press enter to submit prompt, shift + enter should just go to next line  
 - Markdown rendering with tables also
 - Multiple Chat history support with button saying start a new chat
