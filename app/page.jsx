@@ -19,12 +19,7 @@ export default function Home() {
   const [history, setHistory] = useState([]);
   const [file, setFile] = useState(null);
   const [modelId, setModelID] = useState('');
-  const LIMIT = 1000;
-  const WARN_AT = 50; // show warning when <= 50 chars left
-
-  const remaining = LIMIT - prompt.length;
-  const isWarn = remaining <= WARN_AT && remaining > 0;
-  const isMaxed = remaining === 0;
+  const maxLength = 5000;
 
   useEffect(() => {
     try {
@@ -41,6 +36,9 @@ export default function Home() {
   }, [history]);
 
   const handleTextAreaKeyDown = (event) => {
+    if (prompt.length >= maxLength && event.key !== "Backspace" && event.key !== "Delete") {
+      event.preventDefault();
+    }
     if (event.key == 'Enter') {
       if (event.shiftKey){
         return;
@@ -122,12 +120,17 @@ export default function Home() {
           <label className="label" htmlFor="prompt">Your Prompt</label>
           <textarea
             id="prompt"
-            maxLength={'LIMIT'}
             placeholder="Ask anything..."
             value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
+            onChange={(e) => setPrompt(e.target.value.slice(0, maxLength))}
             onKeyDown={handleTextAreaKeyDown}
           />
+          <p
+            id="char-count"
+            style={{ color: prompt.length === maxLength ? "red" : "inherit" }}
+          >
+            Character Count: {prompt.length}/{maxLength}
+          </p>
 
           <label className="label" htmlFor="file"></label>
           <input
